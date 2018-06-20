@@ -423,3 +423,90 @@ JYX_Service js = new JYX_Service();
 目前来看，jsonobject和一个类是一个存在一一对应的（JavaBean）或者说一个实体类。一个大的json可以理解为一个map<string,obj>可以和jsonobj互相转换.  其中如果结构复杂的话obj又可以是一个新的map，的一个大的树形的结构，最终的没个叶子节点都会是一个javabean（obj）。一个list是一个jsonarray，里面的每次一个循环可以作为一个对象去看，一个list里面 每一个obj也可以是一个map（复杂结构）。
 
 一个程序中 最多两个事物，三个的话 就很难保证一致性。
+
+20180620
+最近对于拼写json报文 已经没有任何问题 可以说 对于json的任何操作都可驾驭了。
+复杂类型的对象 属性有string有list可直接转json。
+
+尝试了用jdk和cxf的方式创建和调用webservcie
+jdk：
+import javax.xml.ws.Endpoint;
+
+import cxf.wsinterface;
+import cxf.wsinterfaceImpl;
+
+/**
+ * @Description:TODO
+ * @author: hyc
+ * @date:   2018年6月20日 下午2:16:20
+ */
+public class service {
+    public static void main (String args[]) {
+    	System.out.println("开始webservice");
+    	wsinterface ws = new wsinterfaceImpl();
+    	String address = "http://100.5.8.52:8080/hello";    
+        Endpoint.publish(address, ws);  // JDK实现  
+         System.out.println("服务已启动");  
+    }
+}
+
+主要需要创建一个endpoint 传入相对应的写好的接口和自己的ip  webservice 就可以发布
+调用的时候在cmd输入命令 可以直接生成调用的代码。  根据代码 可以写出对于
+
+
+/**
+ * @Description:TODO
+ * @author: hyc
+ * @date:   2018年6月20日 下午3:36:45
+ */
+public class wsclient {
+	public static void main(String args[]) {
+		WsinterfaceImpl aa = new WsinterfaceImplService().getWsinterfaceImplPort();
+		String fuck = aa.wstest("asdasdasd");
+	    System.out.println("shinime "+fuck);
+	}
+
+}
+创建新的接口类 用实现类去实例化 getport   就可以直接调用方法。
+
+用cxf调用：
+import org.apache.cxf.jaxws.JaxWsServerFactoryBean;
+
+import cxf.wsinterface;
+import cxf.wsinterfaceImpl;
+
+/**
+ * cxf启动webservice
+ * @author: hyc
+ * @date:   2018年6月20日 下午4:34:05
+ */
+public class cxfservice {
+        public static void main(String args[]) {
+        	System.out.println("begin"
+        			+ "cxf webservice");
+			wsinterface wsinterface = new wsinterfaceImpl();
+			String address = "http://100.5.8.52:8080/cxfhello";
+			JaxWsServerFactoryBean factoryBean = new JaxWsServerFactoryBean();
+			factoryBean.setAddress(address);
+			factoryBean.setServiceClass(wsinterface.class);
+			factoryBean.setServiceBean(wsinterface);
+			factoryBean.create();
+			System.out.println("success");
+		}
+}
+cxf提供了JaxWsServerFactoryBean  给bean设置属性以后创建 服务 就能起来  
+
+调用的时候：
+	public static void main(String[] args) {
+		// TODO Auto-generated method stub
+		JaxWsProxyFactoryBean factory = new JaxWsProxyFactoryBean();  
+        factory.setServiceClass(wsinterface.class);  
+        factory.setAddress("http://100.5.8.52:8080/cxfhello");  
+        wsinterface helloworld = (wsinterface) factory.create();  
+        System.out.println(helloworld.wstest("outofmemory.cn"));  
+        System.exit(0);  
+	}
+
+}
+直接用接口对象  点出来方法就好
+接口不可以实例化  接口对象可以直接指向他的实现类对象

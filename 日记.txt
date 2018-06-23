@@ -510,3 +510,13 @@ cxf提供了JaxWsServerFactoryBean  给bean设置属性以后创建 服务 就�
 }
 直接用接口对象  点出来方法就好
 接口不可以实例化  接口对象可以直接指向他的实现类对象
+
+
+bigdecimal ：
+ public BigDecimal add(BigDecimal augend):加 
+ *      public BigDecimal subtract(BigDecimal subtrahend):减 
+ *      public BigDecimal multiply(BigDecimal multiplicand):乘 
+ *      public BigDecimal divide(BigDecimal divisor):除 
+ *      public BigDecimal divide(BigDecimal divisor,int scale,int roundingMode):商,几位小数,如何舍取。 
+计算价格的时候基本都会用到
+用

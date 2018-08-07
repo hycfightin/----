@@ -1,0 +1,7 @@
+linux 查看日志的方法：
+cd 目录名： cd /home/admin/taobao-tomcat-production-7.0.59.3/logs 
+Tab 键 可以提示出目录： cd /home/admin/taobao-tomcat-production-7.0.59.3/logs
+打印日志：  tail -n 100 catalina.out   -n是固定输出多少行  
+                       tail -f 100 catalina.out   -f是循环输出多少行  输出当年服务器上在打印的日志
+                    grep -C 10 '价格计算传入的参数' catalina.out  搜索 大写的C
+                         

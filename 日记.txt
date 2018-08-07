@@ -520,3 +520,7 @@ bigdecimal ：
  *      public BigDecimal divide(BigDecimal divisor,int scale,int roundingMode):商,几位小数,如何舍取。 
 计算价格的时候基本都会用到
 用
+double f = 3.15d;
+		BigDecimal b = new BigDecimal(f).setScale(2, RoundingMode.HALF_UP);
+		int f1 = b.multiply(new BigDecimal(100)).intValue();
+可以解决相乘以后精度发生变化的问题
